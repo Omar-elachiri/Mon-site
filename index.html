@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu de nombre</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div>
+    <p id="p">n : 0</p>
+    <p id="msg">Choisir un nombre entre 1 et 100</p>
+    
+    <form id="form">
+      <input type="number" id="valeur" min="1" max="100">
+      <button type="submit">Go</button>
+    </form>
+  </div>
+
+  <script>
+    const nembre = Math.floor(Math.random() * 100) + 1;
+    const input = document.getElementById('valeur');
+    const msg = document.getElementById('msg');
+    const p = document.getElementById('p');
+    let i = 7;
+
+    function etape() {
+      p.innerText = "n : " + (7 - i);
+    }
+
+    function verifier(event) {
+      event.preventDefault(); // Empêche le formulaire de recharger la page
+
+      const valeur = Number(input.value);
+
+      if (input.value !== "" && valeur >= 1 && valeur <= 100) {
+        msg.style.color = "black";
+
+        if (i === 0) {
+          msg.innerText = "😢 Vous avez perdu ! Le nombre était : " + nembre;
+        } else {
+          if (valeur > nembre) {
+            msg.innerText = "🔻 Plus petit que " + input.value;
+            i--;
+          } else if (valeur < nembre) {
+            msg.innerText = "🔺 Plus grand que " + input.value;
+            i--;
+          } else {
+            msg.innerText = "🎉 Bravo, vous avez trouvé le nombre !";
+            input.disabled = true;
+          }
+        }
+      } else {
+        msg.style.color = "red";
+        msg.innerText = "Veuillez entrer un nombre valide entre 1 et 100.";
+      }
+
+      etape();
+      input.value = "";
+    }
+
+    // Gérer le formulaire et l'input
+    document.getElementById('form').addEventListener('submit', verifier);
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        verifier(e);
+      }
+    });
+
+    etape(); // affichage initial
+  </script>
+</body>
+</html>
+
+
+
